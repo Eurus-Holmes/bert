@@ -412,7 +412,8 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
         doc_start = doc_span.start
         doc_end = doc_span.start + doc_span.length - 1
         out_of_span = False
-        if not (tok_start_position >= doc_start and tok_end_position <= doc_end):
+        if not (tok_start_position >= doc_start and
+                tok_end_position <= doc_end):
           out_of_span = True
         if out_of_span:
           start_position = 0
@@ -1095,6 +1096,9 @@ class FeatureWriter(object):
 
 def validate_flags_or_throw(bert_config):
   """Validate the input FLAGS or throw an exception."""
+  tokenization.validate_case_matches_checkpoint(FLAGS.do_lower_case,
+                                                FLAGS.init_checkpoint)
+
   if not FLAGS.do_train and not FLAGS.do_predict:
     raise ValueError("At least one of `do_train` or `do_predict` must be True.")
 
